@@ -1,7 +1,7 @@
 # q1000zpy
 Q1000Z Keygen
 
-Generates a list of possible passwords for the PK5001Z\
+Generates a list of possible passwords for the Q1000Z\
 Works with serial numbers S12 and older.\
 ESSID is myqwstXXXX\
 Common macs for these modems start with:\
