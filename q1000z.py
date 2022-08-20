@@ -1,5 +1,4 @@
-# Generates a list of possible passwords for the PK5001Z
-# Works with serial numbers S12 and older.
+# Generates a list of possible passwords for the Q1000Z
 # ESSID is myqwstXXXX
 # Common macs for these modems start with:
 # 40:4A:03
