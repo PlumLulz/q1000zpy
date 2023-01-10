@@ -58,19 +58,36 @@ def q1000z(mac, length):
 		hex_digest += d2
 
 	filler = 'AD3EHKL6V5XY9PQRSTUGN2CJW4FM7ZL1'
+	bad_chars = '01'
 
-	if hex_digest[0] == "1" or hex_digest[0] == "0":
-		value1 = ord(hex_digest[0])
-		value2 = ord(hex_digest[1])
-		value3 = ord(hex_digest[13])
-		add = value1 + value2 + value3
-		replacement = add % 30
-		hex_digest = filler[replacement] + hex_digest[1:]
-	for i in range(1, 14):
-		if hex_digest[i] == "1" or hex_digest[i] == "0":
-			hex_digest = "%s%s%s" % (hex_digest[:i], "a", hex_digest[i+1:])
-	key = hex_digest[:length].lower()
-	print(key)
+	uo_count = 0
+	badchar_positions = []
+	for i in range(0, 3):
+		if hex_digest[i] in bad_chars:
+			uo_count += 1
+			badchar_positions.append(i)
+
+	binary_count = 0
+	for i in range(3, 14):
+		if hex_digest[i] in bad_chars:
+			binary_count += 1
+			badchar_positions.append(i)
+
+	list_count = (31 ** uo_count) * (2 ** binary_count)
+	badchar_count = binary_count + uo_count
+
+	for list_number in range(0, list_count):
+		list_position = list_number
+		key = hex_digest[0:14]
+		for char_pos in reversed(range(0, badchar_count)):
+			current_mod = 31
+			if char_pos >= uo_count:
+				current_mod = 2
+			char_value = list_number % current_mod
+			replacement = filler[char_value]
+			key = "%s%s%s" % (key[:badchar_positions[char_pos]], replacement, key[badchar_positions[char_pos]+1:])
+			list_number = math.floor(list_number / current_mod)
+		print(key.lower())
 
 parser = argparse.ArgumentParser(description='Q1000Z Keygen')
 parser.add_argument('mac', help='Mac Address')
